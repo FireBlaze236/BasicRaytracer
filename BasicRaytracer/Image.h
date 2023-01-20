@@ -4,14 +4,14 @@
 #include <string>
 #include <vector>
 
-//#include "color.h"
+#include "Color.h"
 
 
 class Image
 {
 protected:
 	int width, height;
-	float* data;
+	Color* data;
 
 public:
 	Image(int width, int height);
@@ -20,9 +20,9 @@ public:
 
 	int getWidth() const;
 	int getHeight() const;
-	float* getPixel(int x, int y);
+	Color* getPixel(int x, int y);
 
-	void saveImage(std::string filename) const;
+	void saveImage(std::string filename, float exposure, float gamma) const;
 };
 
 #endif

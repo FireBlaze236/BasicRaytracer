@@ -45,6 +45,11 @@ Plane::Plane(const Point& position, const Vector& normal)
 {
 }
 
+Plane::Plane(const Point& position, const Vector& normal, const Color& color)
+	:position(position), normal(normal), color(color)
+{
+}
+
 Plane::~Plane()
 {
 }
@@ -65,6 +70,7 @@ bool Plane::intersect(Intersection& intersection)
 
 	intersection.t = t;
 	intersection.pShape = this;
+	intersection.color = color;
 
 	return true;
 }
@@ -86,8 +92,20 @@ bool Plane::doesIntersect(const Ray& ray)
 	return true;
 }
 
+Vector Plane::getNormal(Vector p) const {
+	return normal;
+}
+
+
+//Sphere
+
 Sphere::Sphere(const Point& center, float radius)
 	: center(center), radius(radius)
+{
+}
+
+Sphere::Sphere(const Point& center, float radius, const Color& color)
+	: center(center), radius(radius), color(color)
 {
 }
 
@@ -124,6 +142,7 @@ bool Sphere::intersect(Intersection& intersection)
 	}
 
 	intersection.pShape = this;
+	intersection.color = color;
 
 	return true;
 }
@@ -155,4 +174,8 @@ bool Sphere::doesIntersect(const Ray& ray)
 
 
 	return false;
+}
+
+Vector Sphere::getNormal(Vector p) const {
+	return (p - center).normalized();
 }

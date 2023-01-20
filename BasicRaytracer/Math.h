@@ -67,6 +67,10 @@ inline Vector operator /(float f, const Vector& v1) {
 	return Vector(f/v1.x, f/v1.y, f/v1.z);
 }
 
+inline float Dot(const Vector& v1, const Vector& v2) {
+	return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
+}
+
 typedef Vector Point;
 
 struct Vector2 {

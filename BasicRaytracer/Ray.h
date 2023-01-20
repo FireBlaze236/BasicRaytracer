@@ -2,10 +2,13 @@
 #define RAY_H
 
 #include "Math.h"
+#include "Color.h"
 
 #define RAY_T_MIN 0.0001f
 
 #define RAY_T_MAX 1.0e30f
+
+
 
 struct Ray {
 	Point origin;
@@ -33,6 +36,7 @@ struct Intersection {
 	Ray ray;
 	float t;
 	Shape* pShape;
+	Color color;
 
 	Intersection();
 	Intersection(const Intersection& i);

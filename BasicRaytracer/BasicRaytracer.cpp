@@ -1,16 +1,23 @@
 ﻿// BasicRaytracer.cpp : Defines the entry point for the application.
 //
 
+
+
 #include "BasicRaytracer.h"
+
+#include <cmath>
 
 #include "Camera.h"
 #include "Shape.h"
 #include "Image.h"
 
 
+
 #define PI 3.1416
 
 using namespace std;
+
+Point lightPoint = Point(-3.0f, 10.0f, -4.0f);
 
 void rayTrace(Image& image, Camera* camera, Shape* scene)
 {
@@ -21,15 +28,28 @@ void rayTrace(Image& image, Camera* camera, Shape* scene)
 
 			Ray ray = camera->makeRay(screenCoord);
 
-			float* curPixel = image.getPixel(x, y);
+			Color* curPixel = image.getPixel(x, y);
 
 			Intersection intersection(ray);
 
+
 			if (scene->intersect(intersection)) {
-				*curPixel = 1.0f;
+
+				
+				Color diffuse = intersection.color;
+				Point phit = intersection.position();
+				Vector dir = (lightPoint - phit).normalized();
+				Ray shadowRay = Ray(phit, dir);
+				float d = Dot(dir, intersection.pShape->getNormal(phit));
+				d = max(0.0f, d);
+				*curPixel = intersection.color * d;
+				if (scene->doesIntersect(shadowRay))
+				{
+					*curPixel *= 0.5f;
+				}
 			}
 			else {
-				*curPixel = 0.0f;
+				*curPixel = Color(0.0f);
 			}
 		}
 	}
@@ -50,14 +70,14 @@ int main()
 
 	ShapeSet scene;
 	
-	Plane floor(Point(0.0f, 0.0f, 0.0f), Vector(0.0f, 1.0f, 0.0f));
+	Plane floor(Point(0.0f, 0.0f, 0.0f), Vector(0.0f, 1.0f, 0.0f), Color(1.0f));
 	scene.addShape(&floor);
 
-	Sphere sphere(Point(0.0f, 1.0f, 0.0f), 1.0f);
+	Sphere sphere(Point(0.0f, 1.0f, 0.0f), 1.0f, Color(0.2f, 0.8f, 0.3f));
 	scene.addShape(&sphere);
 
 	rayTrace(image, &camera, &scene);
 
-	image.saveImage("out.bmp");
+	image.saveImage("out.bmp", 1.0f, 2.2f);
 }
 ;

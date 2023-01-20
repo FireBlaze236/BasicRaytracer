@@ -34,18 +34,18 @@ void rayTrace(Image& image, Camera* camera, Shape* scene)
 
 
 			if (scene->intersect(intersection)) {
-
-				
 				Color diffuse = intersection.color;
 				Point phit = intersection.position();
 				Vector dir = (lightPoint - phit).normalized();
 				Ray shadowRay = Ray(phit, dir);
 				float d = Dot(dir, intersection.pShape->getNormal(phit));
-				d = max(0.0f, d);
-				*curPixel = intersection.color * d;
+				d = max(0.2f, d);
+				*curPixel = diffuse * d;
+
+				//Shadow
 				if (scene->doesIntersect(shadowRay))
 				{
-					*curPixel *= 0.5f;
+					*curPixel *= 0.2f;
 				}
 			}
 			else {
@@ -75,6 +75,9 @@ int main()
 
 	Sphere sphere(Point(0.0f, 1.0f, 0.0f), 1.0f, Color(0.2f, 0.8f, 0.3f));
 	scene.addShape(&sphere);
+
+	Sphere sphere2(Point(-0.4f, 2.0f, -1.2f), 0.3f, Color(0.8f, 0.2f, 0.3f));
+	scene.addShape(&sphere2);
 
 	rayTrace(image, &camera, &scene);
 

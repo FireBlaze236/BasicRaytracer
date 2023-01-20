@@ -7,3 +7,5 @@ project ("BasicRaytracer")
 
 # Include sub-projects.
 add_subdirectory ("BasicRaytracer")
+
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)

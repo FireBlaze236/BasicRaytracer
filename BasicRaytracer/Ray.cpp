@@ -15,6 +15,10 @@ Ray::Ray(const Point& origin, const Vector& direction, float tMax)
 {
 }
 
+Ray::~Ray()
+{
+}
+
 
 
 Ray& Ray::operator=(const Ray& r)

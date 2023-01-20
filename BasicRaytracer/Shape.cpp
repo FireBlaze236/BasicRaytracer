@@ -11,6 +11,7 @@ ShapeSet::~ShapeSet()
 
 void ShapeSet::addShape(Shape* shape)
 {
+	shapes.push_back(shape);
 }
 
 bool ShapeSet::intersect(Intersection& intersection)

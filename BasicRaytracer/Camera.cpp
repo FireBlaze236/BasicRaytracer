@@ -15,7 +15,10 @@ PerspectiveCamera::PerspectiveCamera(Point origin, Vector target, Vector upguide
 
 Ray PerspectiveCamera::makeRay(Vector2 point) const
 {
-	return Ray();
+	Vector direction = forward + point.u * w * right
+		+ point.v * h * up;
+
+	return Ray(origin, direction.normalized());
 }
 
 
